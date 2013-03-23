@@ -1,0 +1,191 @@
+1                                        The SAS System                 11:26 Friday, May 1, 2009
+
+NOTE: Copyright (c) 2002-2003 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) 9.1 (TS1M3)
+      Licensed to SAS Institute Inc., Site 0000000001.
+NOTE: This session is executing on the XP_PRO  platform.
+
+
+
+NOTE: SAS initialization used:
+      real time           0.45 seconds
+      cpu time            0.34 seconds
+      
+1          ods tagsets.slider file='example6.html' style=slider options(doc='help'
+1        ! aural_headers='no');
+NOTE: Writing TAGSETS.SLIDER Body file: example6.html
+==============================================================================
+The HTML Slide Bar Tagset Help Text.
+ 
+This Tagset/Destination creates HTML that has slidebars in the indicated table
+Columns.  The slidebar is turned on by setting tagattr as a style over ride.
+ 
+The following Proc Print turns the sliders on for the height and weight columns.
+The value given is used to calculate a percentage from the values that are in the
+data cells.  If the values are percentages then no value is needed.
+ 
+proc print data=sashelp.class;
+    var name;
+    var sex;
+    var age;     
+    var height / style(data) = slider[just=center tagattr="slider-80"];
+    var weight / style(data) = slider[just=center tagattr="slider-150"];
+ 
+In the case that the values may have negative values a second value must 
+be given.  The second value is the 0 offset.  If the largest negative value 
+is -275 then the offset would be 275.  That value would be specified as this. 
+ 
+    var weight / style(data) = slider[just=center tagattr="slider-150 275"];
+ 
+This particular example specifies a range of -275 - 150 for that column's values.
+ 
+==============================================================================
+ 
+These are the options supported by this tagset.
+ 
+Sample usage:
+ 
+ods tagsets.slidebar file='test.html' options(doc='Help'); 
+ 
+ods tagsets.slidebar options(doc='Quick'); 
+ 
+ods tagsets.slidebar options(currency_symbol='€' Thousands_separator='.'); 
+ 
+Doc:  No default value.
+     Help: Displays introductory text and options.
+2                                        The SAS System                 11:26 Friday, May 1, 2009
+
+     Quick: Displays available options.
+ 
+Aural_headers:   Default Value 'no'
+     When turned on the heders of a table are invisible but readable by
+     HTML readers.   The text of the header is used by default. 
+ 
+Aural_text:   Default Value 'none'
+     valid values are the values of none, flyover or summary.
+     when given, the text of the given field will be used in place of
+     the value of the header.
+ 
+Currency_symbol:   Default Value '$'
+     Used for detection of currency formats and for 
+     removing those symbols so excel will like them.
+     Will be deprecated in a future release when it is
+     no longer needed.        
+ 
+Thousands_separator:   Default Value ','
+     The character used for indicating thousands in numeric values.
+     Used for removing those symbols from numerics so excel will like them.
+     Will be deprecated in a future release when it is no longer needed.
+ 
+==============================================================================
+ 
+2          
+3          options obs=5;
+4          
+5          
+6          Proc Report data=sashelp.class nowd ;
+7             columns  sex name age height weight weight=weight2 weight_pct;
+8          
+9             define sex        / group     'Gender' width=6;
+10            define name       / display   'Name'   width=10;
+11            define age        / display   'Age'    width=4;
+12            define height     / analysis mean  'Height' format=8.1;
+13            define weight     / analysis noprint        format=8.1;
+14            define weight2    / analysis mean  'Weight' format=8.1;
+15            define weight_pct /  '% of Weight' format=Percent6. left
+15       ! style(column)=bar[tagattr="slider"];
+16         
+17            compute weight_pct;
+18                weight_pct = weight.sum / weight_sum;
+19            endcomp;
+20         
+21            compute before sex;
+22                weight_sum = weight.sum;
+23            endcomp;
+24         
+25            break after sex / summarize style=header;
+26         
+27         run;
+
+NOTE: Groups are not created because the usage of Name is DISPLAY.
+3                                        The SAS System                 11:26 Friday, May 1, 2009
+
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      1 at 1:26   
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      1 at 1:26   
+WARNING: In Event: calculate_width, Invalid Expression:  do /if $offset_pos > 0
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset_pos $offset_pos +1
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max_len length($max_and_offset) - 
+         $offset_pos
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max 
+         inputn(substr($max_and_offset,1,$max_len) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset 
+         inputn(substr($max_and_offset,$offset_pos) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $value $value + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max $max + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $width ( $value / $max ) * 100
+WARNING: In Event: calculate_width, Invalid Expression:  do /if $offset_pos > 0
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset_pos $offset_pos +1
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max_len length($max_and_offset) - 
+         $offset_pos
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max 
+         inputn(substr($max_and_offset,1,$max_len) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset 
+         inputn(substr($max_and_offset,$offset_pos) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $value $value + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max $max + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $width ( $value / $max ) * 100
+WARNING: In Event: calculate_width, Invalid Expression:  do /if $offset_pos > 0
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset_pos $offset_pos +1
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max_len length($max_and_offset) - 
+         $offset_pos
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max 
+         inputn(substr($max_and_offset,1,$max_len) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset 
+         inputn(substr($max_and_offset,$offset_pos) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $value $value + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max $max + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $width ( $value / $max ) * 100
+WARNING: In Event: calculate_width, Invalid Expression:  do /if $offset_pos > 0
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset_pos $offset_pos +1
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max_len length($max_and_offset) - 
+         $offset_pos
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max 
+         inputn(substr($max_and_offset,1,$max_len) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset 
+         inputn(substr($max_and_offset,$offset_pos) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $value $value + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max $max + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $width ( $value / $max ) * 100
+WARNING: In Event: calculate_width, Invalid Expression:  do /if $offset_pos > 0
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset_pos $offset_pos +1
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max_len length($max_and_offset) - 
+4                                        The SAS System                 11:26 Friday, May 1, 2009
+
+         $offset_pos
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max 
+         inputn(substr($max_and_offset,1,$max_len) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $offset 
+         inputn(substr($max_and_offset,$offset_pos) , "BEST20."
+WARNING: In Event: calculate_width, Invalid Expression:  eval $value $value + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $max $max + $offset
+WARNING: In Event: calculate_width, Invalid Expression:  eval $width ( $value / $max ) * 100
+NOTE: There were 5 observations read from the data set SASHELP.CLASS.
+NOTE: The PROCEDURE REPORT printed page 1.
+NOTE: PROCEDURE REPORT used (Total process time):
+      real time           0.15 seconds
+      cpu time            0.12 seconds
+      
+
+28         
+29         ods tagsets.slider close;
+30         
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           0.95 seconds
+      cpu time            0.71 seconds
+      

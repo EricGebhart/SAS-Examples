@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;  charset=iso-8859-1">
+<title>SAS Output</title>
+</head>
+<a name="IDX"><p>The SAS System</p>
+<hr size="3">
+<hr>
+Obs<br>Name<br>Sex<br>Age<br>Height<br>Weight<br><hr>
+ 1<br>Alfred<br>M<br>14<br>69.0<br>112.5<br><hr>
+ 2<br>Alice<br>F<br>13<br>56.5<br> 84.0<br><hr>
+ 3<br>Barbara<br>F<br>13<br>65.3<br> 98.0<br><hr>
+ 4<br>Carol<br>F<br>14<br>62.8<br>102.5<br><hr>
+ 5<br>Henry<br>M<br>14<br>63.5<br>102.5<br><hr>
+ 6<br>James<br>M<br>12<br>57.3<br> 83.0<br><hr>
+ 7<br>Jane<br>F<br>12<br>59.8<br> 84.5<br><hr>
+ 8<br>Janet<br>F<br>15<br>62.5<br>112.5<br><hr>
+ 9<br>Jeffrey<br>M<br>13<br>62.5<br> 84.0<br><hr>
+10<br>John<br>M<br>12<br>59.0<br> 99.5<br><hr>
+11<br>Joyce<br>F<br>11<br>51.3<br> 50.5<br><hr>
+12<br>Judy<br>F<br>14<br>64.3<br> 90.0<br><hr>
+13<br>Louise<br>F<br>12<br>56.3<br> 77.0<br><hr>
+14<br>Mary<br>F<br>15<br>66.5<br>112.0<br><hr>
+15<br>Philip<br>M<br>16<br>72.0<br>150.0<br><hr>
+16<br>Robert<br>M<br>12<br>64.8<br>128.0<br><hr>
+17<br>Ronald<br>M<br>15<br>67.0<br>133.0<br><hr>
+18<br>Thomas<br>M<br>11<br>57.5<br> 85.0<br><hr>
+19<br>William<br>M<br>15<br>66.5<br>112.0<br><hr size="3">
+</html>

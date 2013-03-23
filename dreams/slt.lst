@@ -1,0 +1,131 @@
+                                                           The SAS System                        16:10 Monday, February 13, 2006   1
+
+                                          Obs    Name       Sex    Age    Height    Weight
+
+                                            1    Alfred      M      14     69.0      112.5
+                                            2    Alice       F      13     56.5       84.0
+                                            3    Barbara     F      13     65.3       98.0
+                                            4    Carol       F      14     62.8      102.5
+                                            5    Henry       M      14     63.5      102.5
+                                            6    James       M      12     57.3       83.0
+                                            7    Jane        F      12     59.8       84.5
+                                            8    Janet       F      15     62.5      112.5
+                                            9    Jeffrey     M      13     62.5       84.0
+                                           10    John        M      12     59.0       99.5
+                                           11    Joyce       F      11     51.3       50.5
+                                           12    Judy        F      14     64.3       90.0
+                                           13    Louise      F      12     56.3       77.0
+                                           14    Mary        F      15     66.5      112.0
+                                           15    Philip      M      16     72.0      150.0
+                                           16    Robert      M      12     64.8      128.0
+                                           17    Ronald      M      15     67.0      133.0
+                                           18    Thomas      M      11     57.5       85.0
+                                           19    William     M      15     66.5      112.0
+                                                           The SAS System                        16:10 Monday, February 13, 2006   2
+
+                                          Obs    Name       Sex    Age    Height    Weight
+
+                                            1    Alfred      M      14     69.0      112.5
+                                            2    Alice       F      13     56.5       84.0
+                                            3    Barbara     F      13     65.3       98.0
+                                            4    Carol       F      14     62.8      102.5
+                                            5    Henry       M      14     63.5      102.5
+                                            6    James       M      12     57.3       83.0
+                                            7    Jane        F      12     59.8       84.5
+                                            8    Janet       F      15     62.5      112.5
+                                            9    Jeffrey     M      13     62.5       84.0
+                                           10    John        M      12     59.0       99.5
+                                           11    Joyce       F      11     51.3       50.5
+                                           12    Judy        F      14     64.3       90.0
+                                           13    Louise      F      12     56.3       77.0
+                                           14    Mary        F      15     66.5      112.0
+                                           15    Philip      M      16     72.0      150.0
+                                           16    Robert      M      12     64.8      128.0
+                                           17    Ronald      M      15     67.0      133.0
+                                           18    Thomas      M      11     57.5       85.0
+                                           19    William     M      15     66.5      112.0
+                                                              The SAS System                           16:10 Monday, February 13, 2006   3
+
+                                                         S                                 
+                                                         e                                 
+                                               Name      x     Age      Height     Weight  
+                                               --------------------------------------------
+                                                                                           
+                                               Alfred    M         14         69      112.5
+                                               Alice     F         13       56.5         84
+                                               Barbara   F         13       65.3         98
+                                               Carol     F         14       62.8      102.5
+                                               Henry     M         14       63.5      102.5
+                                               James     M         12       57.3         83
+                                               Jane      F         12       59.8       84.5
+                                               Janet     F         15       62.5      112.5
+                                               Jeffrey   M         13       62.5         84
+                                               John      M         12         59       99.5
+                                               Joyce     F         11       51.3       50.5
+                                               Judy      F         14       64.3         90
+                                               Louise    F         12       56.3         77
+                                               Mary      F         15       66.5        112
+                                               Philip    M         16         72        150
+                                               Robert    M         12       64.8        128
+                                               Ronald    M         15         67        133
+                                               Thomas    M         11       57.5         85
+                                               William   M         15       66.5        112
+                                                              The SAS System                           16:10 Monday, February 13, 2006   4
+
+                                                         S                                 
+                                                         e                                 
+                                               Name      x     Age     Height     Weight   
+                                               --------------------------------------------
+                                                                                           
+                                               Alfred    M         14         69      112.5
+                                               Alice     F         13       56.5         84
+                                               Barbara   F         13       65.3         98
+                                               Carol     F         14       62.8      102.5
+                                               Henry     M         14       63.5      102.5
+                                               James     M         12       57.3         83
+                                               Jane      F         12       59.8       84.5
+                                               Janet     F         15       62.5      112.5
+                                               Jeffrey   M         13       62.5         84
+                                               John      M         12         59       99.5
+                                               Joyce     F         11       51.3       50.5
+                                               Judy      F         14       64.3         90
+                                               Louise    F         12       56.3         77
+                                               Mary      F         15       66.5        112
+                                               Philip    M         16         72        150
+                                               Robert    M         12       64.8        128
+                                               Ronald    M         15         67        133
+                                               Thomas    M         11       57.5         85
+                                               William   M         15       66.5        112
+                                                           The SAS System                        16:10 Monday, February 13, 2006   5
+
+                                             Obs    week    date       weight    height
+
+                                               1      1     8-28        1.125       .  
+                                               2      2     9-3         1.777       .  
+                                               3      3     9-11       -3.700       .  
+                                               4      4     9-18        6.500      7.0 
+                                               5      5     9-26       -9.700       .  
+                                               6      6     10-05      14.000       .  
+                                               7      7     10-12      18.000       .  
+                                               8      8     10-19     -20.900       .  
+                                               9      9     10-26      24.900       .  
+                                              10     10     11-02      29.000     13.0 
+                                              11     11     11-02      33.200       .  
+                                              12     12     11-16      37.000       .  
+                                              13     13     11-22     -40.600       .  
+                                              14     14     11-30      45.300     19.0 
+                                              15     15     12-07     -51.900     20.0 
+                                              16     16     12-14      54.500       .  
+                                              17     17     12-21      58.300       .  
+                                              18     18     12-27     -64.500       .  
+                                              19     19     01-04      68.500       .  
+                                              20     20     01-10      69.800       .  
+                                              21     21     01-18      76.000       .  
+                                              22     22     01-25      79.800       .  
+                                              23     23     02-01      83.000       .  
+                                              24     24     02-08      87.300       .  
+                                              25     25     02-15      89.800     25.0 
+                                              26     26     02-22      94.300     26.0 
+                                              27     27     03-01      97.400     26.5 
+                                              28     28     03-08     100.400     27.0 
+                                              29     29     03-15     102.500     27.0 

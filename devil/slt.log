@@ -1,0 +1,138 @@
+1                                                          The SAS System                          17:04 Wednesday, January 23, 2008
+
+NOTE: Copyright (c) 2002-2008 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.2 (TS2B0) 
+      Licensed to SAS Institute Inc., Site 0000000001.
+NOTE: This session is executing on the XP_PRO  platform.
+
+
+
+NOTE: SAS initialization used:
+      real time           1.64 seconds
+      cpu time            0.45 seconds
+      
+1          %inc "ods/pgm/en/excltags.tpl";
+NOTE: Overwriting existing template/link: Tagsets.ExcelBase
+NOTE: TAGSET 'Tagsets.ExcelBase' has been saved to: SASUSER.TEMPLAT
+NOTE: Overwriting existing template/link: Tagsets.Config_debug
+NOTE: TAGSET 'Tagsets.Config_debug' has been saved to: SASUSER.TEMPLAT
+NOTE: Overwriting existing template/link: Tagsets.ExcelXP
+NOTE: TAGSET 'Tagsets.ExcelXP' has been saved to: SASUSER.TEMPLAT
+NOTE: PROCEDURE TEMPLATE used (Total process time):
+      real time           13.53 seconds
+      cpu time            2.95 seconds
+      
+
+7360       proc template;
+7361          define style styles.journal_borders;
+7362              parent = styles.journal;
+7363       
+7364              style header from header/
+7365                  font_weight = bold
+7366                  foreground = cx006666
+7367              ;
+7368       
+7369       
+7370              style header_right from header /
+7371                    borderrightstyle=solid
+7372                    borderrightcolor=cx006666
+7373                    borderrightwidth=2
+7374              ;
+7375       
+7376              style header_bottom_right from header_right /
+7377                    borderbottomstyle=solid
+7378                    borderbottomcolor=cx006666
+7379                    borderbottomwidth=2
+7380              ;
+7381       
+7382              style header_thinbottom_right from header_right /
+7383                    borderbottomstyle=solid
+7384                    borderbottomcolor=cx006666
+7385                    borderbottomwidth=1
+7386              ;
+7387              style header_bottom from header /
+7388                    borderbottomstyle=solid
+7389                    borderbottomcolor=cx006666
+2                                                          The SAS System                          17:04 Wednesday, January 23, 2008
+
+7390                    borderbottomwidth=2
+7391              ;
+7392       
+7393              style data_bottom from data /
+7394                    borderbottomstyle=solid
+7395                    borderbottomcolor=black
+7396                    borderbottomwidth=1
+7397              ;
+7398              style data_bottom_right from data_bottom /
+7399                    borderrightstyle=solid
+7400                    borderrightcolor=cx006666
+7401                    borderrightwidth=2
+7402              ;
+7403           end;
+NOTE: Overwriting existing template/link: Styles.Journal_borders
+NOTE: STYLE 'Styles.Journal_borders' has been saved to: SASUSER.TEMPLAT
+7404       run;
+NOTE: PROCEDURE TEMPLATE used (Total process time):
+      real time           0.14 seconds
+      cpu time            0.04 seconds
+      
+
+7405       
+7406       
+7407       data prof;
+7408        input grade rpass year count percent;
+7409       cards;
+
+NOTE: The data set WORK.PROF has 12 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.07 seconds
+      
+
+7422       ;
+7423       
+7424       ods tagsets.ExcelXP file='example7.xls' style=journal_borders options(zoom="200");
+NOTE: Writing TAGSETS.EXCELXP Body file: example7.xls
+NOTE: This is the Excel XP tagset (SAS 9.1.3, v1.78, 10/03/07). Add options(doc='help') to the ods statement for more information.
+7425       
+7426       proc report data = prof nowd;
+7427       	column grade grade=grade2 rpass year,(count percent);
+7428       	define grade / group order=data descending 'Grade'
+7429                                    style(column)=header
+7430                                    style(header) = header_bottom;
+7431       	define grade2 / noprint;
+7432       	define rpass / group ' ' order=internal
+7433                                    style(column) = header_thinbottom_right
+7434                                    style(header) = header_bottom_right;
+7435       	define year / across order=data descending ' '
+7436                                    style(header)=header_right;
+7437       	define count / '#'   style(header) = header_bottom;
+7438       	define percent / '%' style(header) = header_bottom_right
+3                                                          The SAS System                          17:04 Wednesday, January 23, 2008
+
+7439                                    style(column) = data_bottom_right{tagattr='format:0.0%'};
+7440       
+7441       /*
+7442       	compute grade2;
+7443       		if mod(grade2, 2) = 0 then do;
+7444       			call define (_row_, "style/merge", "style = [background = CXDFE1D5]");
+7445       		end;
+7446       	endcomp;	
+7447       */
+7448       
+7449       run;
+
+NOTE: There were 12 observations read from the data set WORK.PROF.
+NOTE: The PROCEDURE REPORT printed page 1.
+NOTE: PROCEDURE REPORT used (Total process time):
+      real time           4.43 seconds
+      cpu time            0.89 seconds
+      
+
+7450       
+7451       ods tagsets.ExcelXP close;
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           52.57 seconds
+      cpu time            9.21 seconds
+      

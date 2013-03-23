@@ -1,0 +1,432 @@
+
+proc template;
+
+    /****************************************************************/
+    /****************************************************************/
+    /****************************************************************/
+    /*  CSV Format.  tables only comma delimited format for EXcel   */
+    /****************************************************************/
+    /****************************************************************/
+    /****************************************************************/
+
+    define tagset tagsets.csv;
+        notes "This is the CSV definition";
+        stacked_columns = no;
+        output_type = 'csv';
+        copyright='(c)';
+        trademark='(tm)';
+        registered_tm='(r)';
+        map = '"';
+        mapsub = '/""/';
+        mvar _CURRENCY_SYMBOL;
+        mvar _DECIMAL_SEPARATOR;
+        mvar _THOUSANDS_SEPARATOR;
+        mvar _CURRENCY_AS_NUMBER;
+        mvar _PERCENTAGE_AS_NUMBER;
+        mvar _DELIMITER;
+
+        define event initialize;
+            trigger set_options;
+            trigger documentation;
+            trigger compile_regexp;
+        end;
+
+        define event options_set;
+            trigger set_options;
+            trigger documentation;
+            trigger compile_regexp;
+        end;
+        
+        define event documentation;
+            trigger help /if cmp($options['DOC'], 'help');
+            trigger quick /if cmp($options['DOC'], 'quick');
+        end;
+        
+    define event help;
+        putlog "==============================================================================";
+        putlog "The CSV Tagset Help Text.";
+        putlog " ";
+        putlog "This Tagset/Destination creates output in comma separated value format.";
+        putlog " ";
+        putlog "Numbers, Currency and percentages are correctly detected and show as numeric values.";
+        putlog "Dollar signs, commas and percentages are stripped from numeric values by default.";
+        putlog " ";
+        trigger quick_reference;
+    end;
+
+    define event quick_reference;
+        putlog "==============================================================================";
+        putlog " ";
+        putlog "These are the options supported by this tagset.";
+        putlog " ";
+        putlog "Sample usage:";
+        putlog " ";
+        putlog "ods csv options(doc='Quick'); ";
+        putlog " ";
+        putlog "ods csv options(currency_as_number='yes' percentage_as_number='yes' delimiter=';'); ";
+        putlog " ";
+        putlog "Doc:  No default value.";
+        putlog "     Help: Displays introductory text and options.";
+        putlog "     Quick: Displays available options.";
+        putlog " ";
+        putlog "Delimiter:   Default Value ','";
+        putlog "     Sets the delimiter for the values.  Comma is the default.  Semi-colon is";
+        putlog "     a popular setting for european sites.";
+        putlog " ";
+        putlog "currency_as_number:   Default Value 'No'";
+        putlog "     If 'Yes' currency values will not be quoted.";
+        putlog "     The currency values are stripped of punctuation and currency symbols";
+        putlog "     so they can be used as a number.";
+        putlog " ";
+        putlog "percentage_as_number:   Default Value 'No'";
+        putlog "     If 'Yes' percentage values will not be quoted.";
+        putlog "     The percentages are stripped of punctuation and the percent sign";
+        putlog "     so they can be used as a number.";
+        putlog " ";
+        putlog "Currency_symbol:   Default Value '$'";
+        putlog "     Used for detection of currency formats and for ";
+        putlog "     removing those symbols so excel will like them.";
+        putlog "     Will be deprecated in a future release when it is";
+        putlog "     no longer needed.        ";
+        putlog " ";
+        putlog "Decimal_separator:   Default Value '.'";
+        putlog "     The character used for the decimal point.";
+        putlog "     Will be deprecated in a future release when it is no longer needed.";
+        putlog " ";
+        putlog "Thousands_separator:   Default Value ','";
+        putlog "     The character used for indicating thousands in numeric values.";
+        putlog "     Used for removing those symbols from numerics so excel will like them.";
+        putlog "     Will be deprecated in a future release when it is no longer needed.";
+        putlog " ";
+        putlog "Bylines:   Default Value: No";
+        putlog "     If yes bylines will be printed";
+        putlog " ";
+        putlog "Titles:   Default Value: No";
+        putlog "     If yes titles and footnotes will be printed";
+        putlog " ";
+        putlog "Notes:   Default Value: No";
+        putlog "     If yes Note, Warning, Error, and Fatal notes will be printed";
+        putlog " ";
+        putlog "Proc_Titles:   Default Value: No";
+        putlog "     If yes titles generated by the procedures will be printed";
+        putlog " ";
+        putlog "==============================================================================";
+    end;
+        
+        define event set_options;
+            unset $currency_sym;
+            unset $decimal_separator;
+            unset $thousand_separator;
+            unset $currency_number;
+            unset $percentage_number;
+            unset $delimiter ;
+            set $options['junk'] "junk" /if ^$options;
+
+            /*=========================================================*/
+            /* If the currency symbol, decimal separator, or thousands */
+            /* separator are Perl regular expression metacharacters,   */
+            /* then they must be escaped with a backslash.             */
+            /*=========================================================*/
+
+            set $currency_sym $options['CURRENCY_SYMBOL'];
+            set $currency_sym _CURRENCY_SYMBOL /if ^$currency_sym;
+            set $currency_sym "\$" /if ^$currency_sym;
+
+            set $decimal_separator $options['DECIMAL_SEPARATOR'];
+            set $decimal_separator _DECIMAL_SEPARATOR /if ^$decimal_separator;
+            set $decimal_separator  "\." /if ^$decimal_separator;
+
+            set $thousands_separator $options['THOUSAND_SEPARATOR'];
+            set $thousands_separator _THOUSANDS_SEPARATOR /if ^$thousands_separator;
+            set $thousands_separator "," /if ^$thousands_separator;
+            
+            set $currency_number "True" / if cmp($options['CURRENCY_AS_NUMBER'], 'yes');
+            do /if ^$currency_number;
+                set $currency_number "True" / if cmp(_CURRENCY_AS_NUMBER, 'yes');
+            done;
+            
+            set $percentage_number "True" / if cmp($options['PERCENTAGE_AS_NUMBER'], 'yes');
+            do /if ^$percentage_number;
+                set $percentage_number "True" / if cmp(_PERCENTAGE_AS_NUMBER, 'yes');
+            done;
+
+            set $delimiter $options['DELIMITER'];
+            set $delimiter _DELIMITER /if ^$delimiter;
+            set $delimiter ',' /if ^$delimiter;
+
+            do / if cmp($options['BYLINES'], 'yes');
+                set $Bylines "True";
+            else;
+                unset $Bylines;
+            done;
+
+            do / if cmp($options['TITLES'], 'yes');
+                set $titles "True";
+            else;
+                unset $titles;
+            done;
+
+            do / if cmp($options['PROC_TITLES'], 'yes');
+                set $proc_titles "True";
+            else;
+                unset $proc_titles;
+            done;
+
+            do / if cmp($options['NOTES'], 'yes');
+                set $notes "True";
+            else;
+                unset $notes;
+            done;
+        end;
+
+        /*=============================================================*/
+        /* Compile a Perl regular expression that matches numbers,     */
+        /* including numbers formatted as currency, percentages, real  */
+        /* numbers and scientific notation. The result is in $number.  */
+        /*=============================================================*/
+
+        define event compile_regexp;
+
+            set $punctuation $currency_sym ",%+";
+
+            set $integer_re   '\d+';
+            set $sign_re      '[+-]?';
+            set $group_re     '\d{1,3}(?:' $thousands_separator '\d{3})*';
+            set $whole_re     '(?:' $group_re "|" $integer_re ')';
+            set $exponent_re  '[eE]' $sign_re $integer_re;
+            set $fraction_re  '(?:' $decimal_separator '\d*)';
+            set $real_re      '(?:' $whole_re $fraction_re '|' $fraction_re $integer_re '|' $whole_re ')';
+            set $percent_re   $sign_re $real_re '\%';
+            set $scinot_re    $sign_re '(?:' $real_re $exponent_re '|' $real_re ')';
+            set $cents_re     '(?:' $decimal_separator '\d\d)';
+            set $money_re     $sign_re $currency_sym '(?:' $whole_re $cents_re '|' $cents_re '|' $whole_re ')';
+            set $number_re    '/^(?:' $real_re '|' $percent_re '|' $scinot_re '|' $money_re ')\Z/';
+            eval $number prxparse($number_re);
+        end;
+
+        define event put_value_cr;
+            put VALUE nl;
+        end;
+
+        define event verbatim;
+            finish:
+                put CR;
+        end;
+
+        define event verbatim_text;
+            put VALUE;
+            put nl;
+        end;
+
+        /* Needed by get_column_type */
+        define event proc;
+            set $proc_name name;
+        end;
+
+        define event table;
+            finish:
+                put CR;
+        end;
+
+        define event row;
+            finish:
+                do /if $cell_count;
+                    close;
+                    eval $cell_count 0;
+
+                    /*-----------------------------------------------------------eric-*/
+                    /*-- End of second row, only thing there is the                 --*/
+                    /*-- rowheaders. print the data cell that were saved            --*/
+                    /*-- from the row above.                                        --*/
+                    /*--------------------------------------------------------17Nov03-*/
+                else /if $$row;
+                    put $$row;
+                    unset $$row;
+                done;
+                put nl;
+        end;
+
+        define event header;
+            start:
+                put $delimiter / if !cmp(COLSTART, "1");
+                put '"';
+                put strip(VALUE);
+            finish:
+                put '"';
+        end;
+
+        define event data;
+            start:
+                do /if ^$cell_count;
+                    do /if cmp(rowspan, "2");
+                        open row;
+                        eval $cell_count 1;
+                    done;
+                else;
+                    eval $cell_count $cell_count + 1;
+                done;
+                put $delimiter / if !cmp(COLSTART, "1");
+                trigger put_value;
+            finish:
+                put '"' /if cmp($type, "String");
+        end;
+
+        define event data_note;
+            start:
+                trigger data;
+            finish:
+                trigger data;
+        end;
+
+        define event colspanfill;
+            put $delimiter;
+        end;
+
+        define event rowspanfill;
+            break /if $$row;
+            put $delimiter /if ! exists(VALUE);
+        end;
+
+        define event breakline;
+            put CR;
+        end;
+
+        define event splitline;
+            put CR;
+        end;
+
+        define event put_value;
+            unset $value;
+            unset $type;
+            break /if ~VALUE;
+
+            set $value strip(VALUE);
+            trigger value_type;
+            do /if cmp($type, "String");
+                put '"';
+            done;
+            put $value;
+        end;
+
+        define event value_type;
+            eval $is_numeric prxmatch($number, $value);
+            do /if $is_numeric;
+
+                set $type "Number";
+
+                do /if ^$currency_number;
+                    do /if index($value, $currency_sym);
+                        set $type "String";
+                    done;
+                done;
+
+                do /if ^$percentage_number;
+                    do /if index($value, '%');
+                        set $type "String";
+                    done;
+                done;
+
+                set $value compress($value, $punctuation) /if cmp($type, "Number");
+
+            else;
+                set $type 'String';
+            done;
+        end;
+
+        define event byline;
+            break /if ^$bylines;
+            putq value nl;
+        end;
+
+        define event proc_title;
+            break /if ^$proc_titles;
+            put VALUE CR;
+        end;
+
+        define event title_format_section;
+            break /if ^$titles;
+            put value;
+        end;
+
+        define event system_title;
+            start:
+                break /if ^$titles;
+                put VALUE;
+            finish:
+                break /if ^$titles;
+                put CR CR;
+        end;
+
+        define event system_footer;
+            start:
+                break /if ^$titles;
+                put VALUE;
+            finish:
+                break /if ^$titles;
+                put CR CR;
+        end;
+
+        define event note;
+            break /if ^$notes;
+            put VALUE CR;
+        end;
+
+        define event fatal;
+            break /if ^$notes;
+            put VALUE CR;
+        end;
+
+        define event error;
+            break /if ^$notes;
+            put VALUE CR;
+        end;
+
+        define event warning;
+            break /if ^$notes;
+            put VALUE CR;
+        end;
+
+    end;
+
+    /******************************************************/
+    /******************************************************/
+    /******************************************************/
+    /*  CSV Byline Format.  csv with bylines              */
+    /******************************************************/
+    /******************************************************/
+    /******************************************************/
+
+    define tagset tagsets.csvbyline;
+       parent=tagsets.csv;
+
+        define event initialize;
+            set $options['BYLINES'] 'yes';
+            trigger set_options;
+            trigger documentation;
+            trigger compile_regexp;
+        end;
+    end;
+
+    /******************************************************/
+    /******************************************************/
+    /******************************************************/
+    /*  CSV ALL Format.  csv with titles and bylines      */
+    /******************************************************/
+    /******************************************************/
+    /******************************************************/
+
+    define tagset tagsets.csvall;
+        parent= tagsets.csv;
+        notes "This is the CSV with titles and bylines definition";
+
+        define event initialize;
+            set $options['BYLINES'] 'yes';
+            set $options['TITLES'] 'yes';
+            set $options['PROC_TITLES'] 'yes';
+            set $options['NOTES'] 'yes';
+            trigger set_options;
+            trigger documentation;
+            trigger compile_regexp;
+        end;
+
+    end;

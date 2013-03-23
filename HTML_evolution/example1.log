@@ -1,0 +1,231 @@
+==============================================================================
+The tagsets.HTML4 Tagset Help Text.
+ 
+This Tagset/Destination creates output in HTML format.
+ 
+ 
+==============================================================================
+ 
+These are the options supported by this tagset.
+ 
+Sample usage:
+ 
+ods html options(doc='Quick'); 
+ 
+ods html options(header_dots='yes' summary_byvars='yes'); 
+ 
+ods tagsets.htmlpanel file='test.html' options(doc='Quick'); 
+
+ 
+ods tagsets.htmlpanel options(panelColumns='3'
+                              embedded_titles='No'
+                              bylines='No'
+                              bylabels='No'); 
+See Also:
+http://support.sas.com/rnd/base/topics/odsmarkup/
+ 
+Doc:  No default value.
+     Help: Displays introductory text and options.
+     Quick: Displays available options.
+ 
+body_toc:   Default Value 'no'
+     Creates a floating table of contents in the main output file.
+ 
+toc_type:   Default Value 'tree'
+     menu: display as pulldown menus.
+     tree: display as a hierarchical list.
+     Determines whether the table of contents will show as pulldown menus or as a tree.
+ 
+header_data_associations:   Default Value 'no'
+     Associates data cells and header cells by adding an ID attribute
+     to each header cell and listing the IDs of associated headers in
+     a HEADERS attribute added to each data cell. (PROC REPORT only)
+ 
+header_dots:   Default Value 'no'
+     Puts hidden dots before the text in all table headers
+ 
+head_file:   Default Value 'none'
+    File to read in and put in place of the head section of a document
+    A foot file must also be specified as well as the notop option on the ods statement
+ 
+foot_file:   Default Value 'none'
+    File to read in and put in place of the foot section of a document
+    A head file must also be specified as well as the notop option on the ods statement
+ 
+Panelling:   Default Value 'no'
+     Turn on automatic panelling for graph procedures.
+ 
+scroll_tables:   Default Value 'no'
+     Causes tables to scroll vertically.
+ 
+scroll_batch_size:   Default Value '8'
+     Number of observations to display in a scrolling table.
+     This can also be set through a macro variable of the same name.
+     This value can also be provided on the url when loading the output.
+     http://www.foo.com/mytables.html?batch_size=3";
+ 
+scroll_control_images:   Default Value 'no'
+     Causes the scroll controls to use images rather than ascii characters
+     By default these images are named, top.png, pageup.png, up.png, down.png, pagedown.png,
+     and bottom.png.  These images and more information about table scrolling can be
+     found here.  http://support.sas.com/rnd/base/ods/odsmarkup/htmlscroll.html
+ 
+scroll_control_text:   Default Value 'no'
+     Causes the scroll controls to use textual words, top, pageup, up, down, page down, and bottom
+     rather than ^^, ^, +, -, v, vv.
+ 
+scroll_long_table_length:  Default Value (2 * scroll_batch_size)+1
+     Number of rows a table must have before scrolling is turned on for that table.
+     This can also be set through a macro variable of the same name.
+     This value can also be provided on the url when loading the output.
+     http://www.foo.com/mytables.html?batch_size=3&long_table_length=20';
+ 
+summary_as_caption:   Default Value 'no'
+     Causes a table caption to be created from the table summary.
+ 
+summary_byvars:   Default Value 'no'
+     Adds a list of by variable names to the table summary
+ 
+summary_byvals:   Default Value 'no'
+     Add the values of the by variables along with the names in the table summary
+     This works with summary byvars but not without.
+ 
+summary:   Default Value ''
+     Text for the table summary
+ 
+summary_prefix:   Default Value ''
+     Text to place at the beginning of table summary
+ 
+summary_suffix:   Default Value ''
+     Text to place at the end of table summary
+ 
+page_break:   Default Value 'yes'
+     If yes, the usual pagebreak style attribute will be used to create
+     what becomes the page separator.  Usually that is an HR line.
+     If No, then no pagebreak will be output.
+     If anything else, the value given will be output as the pagebreak.
+ 
+css_table:   Default Value 'no'
+     If yes, the table tags will not have any style attributes but will
+     rely entirely on the table style defined in the stylesheet.  This may
+     create undesirable table rendering in some browsers.
+ 
+percentage_font_size:   Default Value 'no'
+     If yes, titles and footnotes will allow font sizes to be specified as
+     a percentage of the font size.
+ 
+==============================================================================
+ 
+Additional inline format functions that may be useful.
+  These functions may also be called with the ods html event= statement
+ 
+  inline_image:
+      ~{inline_image test.jpg}
+     This function will place an image in the current output.
+ 
+  include_file:
+      ~{include_file test.txt}
+     This function will read an external file and place it's contents in the output.
+ 
+  include_newlines:
+      ~{include_newlines yes}
+     This function will cause include_file to place a break at the end of each line
+     that it reads from external file so that newlines are preserved.
+ 
+==============================================================================
+
+Panelling Options
+ 
+PanelColumns:   Default Value '2'
+     Current Value: 2
+     How many columns of panels to create when doing automatic or 
+     semi-automatic panelling.  The default is to put everything 2 up.
+     Also available as a macro variable
+ 
+PanelBorder:   Default Value '0'
+     Current Value: 0
+     This is border width, 0 means no borders.  Bigger numbers make it wider.
+     Also available as a macro variable.
+ 
+Embedded_Titles:   Default Value 'No'
+     Current Value: No
+     If 'Yes' titles and footnotes will appear inside each panel as if each
+     panel where a miniature page.  If 'No' the titles and footnotes appear
+     once above and below the entire panel grouping.
+     Also available as a macro variable.
+ 
+ByLabels:   Default Value 'Yes'
+     Current Value: yes
+     If 'No' remove the variable name and equals sign from the bylines.
+     Also available as a macro variable.
+ 
+ByLines:   Default Value 'Yes'
+     Current Value: yes
+     If 'No' do not generate any bylines.
+     Also available as a macro variable.
+ 
+------------------------------------------------------------------------
+Event Controls
+ 
+Semi-automatic and manual panelling is controlled by calling events from
+the ODS statement.  They are started and stopped by specifying start and
+finish as arguments to the event.  Row_panel and column_panels can be nested
+to create complex layout configurations
+ 
+Automatic panelling must be turned on with the panelling option.
+ 
+Panel:   
+     This event starts and stops semi-automatic panelling.  All output
+     between the start and finish will be panelled according to the
+     settings of the option variables above.
+ 
+     ODS tagsets.htmlpanel event=panel(start);
+     /* Run Procs here */
+     ODS tagsets.htmlpanel event=panel(finish);
+ 
+row_panel:
+     This event starts a row-wise panel.  Each output object will be
+     placed horizontally while this panel is active.
+ 
+     ODS tagsets.htmlpanel event=row_panel(start);
+     /* Run Procs here */
+     ODS tagsets.htmlpanel event=row_panel(finish);
+ 
+column_panel:
+     This event starts a column-wise panel.  Each output object will be
+     placed vertically while this panel is active.
+ 
+     ODS tagsets.htmlpanel event=column_panel(start);
+     /* Run Procs here */
+     ODS tagsets.htmlpanel event=column_panel(finish);
+ 
+ 
+A more complex example.
+ 
+ |------------------------|
+ ||------|        |------||
+ ||      |        |      ||
+ ||      |        |      ||
+ ||      |        |      ||
+ ||      |        |      ||
+ ||      |        |      ||
+ ||      |        |      ||
+ ||------|        |------||
+ |------------------------|
+ 
+     ODS tagsets.htmlpanel event=row_panel(start);
+ 
+     ODS tagsets.htmlpanel event=column_panel(start);
+     /* Run Procs here */
+     ODS tagsets.htmlpanel event=column_panel(finish);
+ 
+     /* Run a graph to be placed in the middle 
+ 
+     ODS tagsets.htmlpanel event=column_panel(start);
+     /* Run Procs here */
+     ODS tagsets.htmlpanel event=column_panel(finish);
+ 
+     ODS tagsets.htmlpanel event=row_panel(finish);
+ 
+==============================================================================
+      
